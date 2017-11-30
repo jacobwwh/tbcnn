@@ -1,0 +1,7 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/usr/local/bin/vectorize", line 11, in <module>
+    load_entry_point('tbcnn', 'console_scripts', 'vectorize')()
+  File "/home/wangqiao/tbcnn-master/vectorizer/commands.py", line 62, in main
+    with open(args.infile, 'rb') as sample_file:
+IOError: [Errno 2] No such file or directory: 'sampler/data/algorithm_nodes.pkl'
