@@ -7,3 +7,6 @@ For java comment data
 5. python vectorizer/commands.py ast2vec --in ../tbcnn-data/java/java100_nodes.pkl --out ../tbcnn-data/java/java100_embedding.pkl --checkpoint vectorizer/logs
 6. python classifier/commands.py train --infile ../tbcnn-data/java/java100_trees.pkl --embedfile ../tbcnn-data/java/java100_embedding.pkl --learn_rate 0.1 --batch_size 2 --conv_feature 100 --epoch 1
 7. python classifier/commands.py test --infile ../tbcnn-data/java/java100_trees.pkl --embedfile ../tbcnn-data/java/java100_embedding.pkl --learn_rate 0.1 --batch_size 2 --conv_feature 100 --epoch 1
+
+
+[tbcnn-data](https://drive.google.com/open?id=1zDUiAQh2D2613OP-OP8--laDFH7qkNBa): containing poj data and small java function with comment data
