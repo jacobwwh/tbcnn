@@ -2,7 +2,6 @@
 
 import os
 import sys
-import logging
 import cPickle as pickle
 import tensorflow as tf
 import vectorizer.ast2vec.network as network
