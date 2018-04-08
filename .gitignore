@@ -1,3 +1,8 @@
+classifier/logs
+*.txt
+.git
+.idea/
+
 # Data folder
 data/
 cache/

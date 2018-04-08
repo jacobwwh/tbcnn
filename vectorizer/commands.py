@@ -6,7 +6,6 @@ import logging
 import sys
 import pickle
 import vectorizer.ast2vec.train as ast2vec
-from vectorizer.node_map import NODE_LIST
 
 LOG_FILE = 'vectorizer/vectorizer.log'
 
@@ -58,9 +57,13 @@ def main():
     )
 
     args = parser.parse_args()
-
+    print args.model.lower()
     with open(args.infile, 'rb') as sample_file:
         samples = pickle.load(sample_file)
 
     if args.model.lower() == 'ast2vec':
         ast2vec.learn_vectors(samples, args.checkpoint, args.outfile)
+
+
+if __name__ == '__main__':
+    main()

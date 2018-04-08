@@ -4,7 +4,7 @@ described in Lili Mou et al. (2015) https://arxiv.org/pdf/1409.5718.pdf"""
 import math
 import tensorflow as tf
 
-def init_net(feature_size, label_size):
+def init_net(feature_size, conv_feature, label_size):
     """Initialize an empty network."""
 
     with tf.name_scope('inputs'):
@@ -12,10 +12,10 @@ def init_net(feature_size, label_size):
         children = tf.placeholder(tf.int32, shape=(None, None, None), name='children')
 
     with tf.name_scope('network'):
-        conv1 = conv_layer(1, 100, nodes, children, feature_size)
+        conv1 = conv_layer(1, conv_feature, nodes, children, feature_size)
         #conv2 = conv_layer(1, 10, conv1, children, 100)
         pooling = pooling_layer(conv1)
-        hidden = hidden_layer(pooling, 100, label_size)
+        hidden = hidden_layer(pooling, conv_feature, label_size)
 
     with tf.name_scope('summaries'):
         tf.summary.scalar('tree_size', tf.shape(nodes)[1])
@@ -269,6 +269,9 @@ def loss_layer(logits_node, label_size):
         )
 
         loss = tf.reduce_mean(cross_entropy, name='cross_entropy_mean')
+        # loss = tf.losses.mean_squared_error(
+        #     labels=labels, predictions=logits_node
+        # )
 
         return labels, loss
 

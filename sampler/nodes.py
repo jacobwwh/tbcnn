@@ -1,8 +1,8 @@
 """Parse nodes from a given data source."""
 
-import ast
 import cPickle as pickle
 from collections import defaultdict
+from code2ast.codesource.java_ast import JavaAST
 
 def parse(args):
     """Parse nodes with the given args."""
@@ -46,6 +46,7 @@ def parse(args):
 
     print('Sampled node counts:')
     print(node_counts)
+    print('Copy the following list to vectorizer/node_map.py')
     print(node_counts.keys())
     print('Total: %d' % sum(node_counts.values()))
 
@@ -77,4 +78,10 @@ def _traverse_tree(tree, callback):
 
 def _name(node):
     """Get the name of a node."""
-    return type(node).__name__
+    if isinstance(node, JavaAST):
+        if isinstance(node, tuple):
+            return node[1].name
+        else:
+            return node.name
+    else:
+        return type(node).__name__

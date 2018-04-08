@@ -9,7 +9,7 @@ import classifier.tbcnn.network as network
 import classifier.tbcnn.sampling as sampling
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
-def test_model(logdir, infile, embedfile):
+def test_model(logdir, infile, embedfile, conv_feature):
     """Test a classifier to label ASTs"""
 
     with open(infile, 'rb') as fh:
@@ -22,6 +22,7 @@ def test_model(logdir, infile, embedfile):
     # build the inputs and outputs of the network
     nodes_node, children_node, hidden_node = network.init_net(
         num_feats,
+        conv_feature,
         len(labels)
     )
     out_node = network.out_layer(hidden_node)
@@ -57,7 +58,6 @@ def test_model(logdir, infile, embedfile):
         correct_labels.append(np.argmax(batch_labels))
         predictions.append(np.argmax(output))
         step += 1
-        print(step, '/', len(trees))
 
     target_names = list(labels)
     print('Accuracy:', accuracy_score(correct_labels, predictions))

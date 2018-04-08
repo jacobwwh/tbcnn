@@ -10,7 +10,6 @@ def gen_samples(trees, labels, vectors, vector_lookup):
 
     # encode labels as one-hot vectors
     label_lookup = {label: _onehot(i, len(labels)) for i, label in enumerate(labels)}
-
     for tree in trees:
         nodes = []
         children = []
@@ -27,6 +26,8 @@ def gen_samples(trees, labels, vectors, vector_lookup):
             # add this child to its parent's child list
             if parent_ind > -1:
                 children[parent_ind].append(node_ind)
+            if node['node'] == 'root':
+                node['node'] = 'FileAST'
             nodes.append(vectors[vector_lookup[node['node']]])
 
         yield (nodes, children, label)

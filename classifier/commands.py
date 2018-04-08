@@ -6,42 +6,30 @@ import logging
 import classifier.tbcnn.train as tbcnn_train
 import classifier.tbcnn.test as tbcnn_test
 
-def main():
+if __name__ == "__main__":
     """Commands to train and test classifiers."""
-
     parser = argparse.ArgumentParser(
         description="Train and test classifiers on datasets.""",
     )
-    subparsers = parser.add_subparsers(help='sub-command help')
-
-    train_parser = subparsers.add_parser(
-        'train', help='Train a model to classify'
+    parser.add_argument(
+        'action',
+        type=str,
+        help='train or test action',
     )
-    train_parser.add_argument('model', type=str, help='Model to train: options are "tbcnn"')
-    train_parser.add_argument('--infile', type=str, help='Data file to sample from')
-    train_parser.add_argument('--logdir', type=str, help='File to store logs in')
-    train_parser.add_argument(
+    parser.add_argument('--infile', type=str, help='Data file to sample from')
+    parser.add_argument(
         '--embedfile', type=str, help='Learned vector embeddings from the vectorizer'
     )
-    train_parser.set_defaults(action='train')
-
-    test_parser = subparsers.add_parser(
-        'test', help='Test a model'
-    )
-    test_parser.add_argument('model', type=str, help='Model to train: options are "tbcnn"')
-    test_parser.add_argument('--infile', type=str, help='Data file to sample from')
-    test_parser.add_argument('--logdir', type=str, help='File to store logs in')
-    test_parser.add_argument(
-        '--embedfile', type=str, help='Learned vector embeddings from the vectorizer'
-    )
-    test_parser.set_defaults(action='test')
+    parser.add_argument("--learn_rate", type=float, help="Learning rate")
+    parser.add_argument("--batch_size", type=int, help="Batch size")
+    parser.add_argument("--conv_feature", type=int, help="Convolution output feature")
+    parser.add_argument("--epoch", type=int, help="Epoch")
 
     args = parser.parse_args()
 
-    if args.action == 'train':
-        if args.model == 'tbcnn':
-            tbcnn_train.train_model(args.logdir, args.infile, args.embedfile)
-
-    if args.action == 'test':
-        if args.model == 'tbcnn':
-            tbcnn_test.test_model(args.logdir, args.infile, args.embedfile)
+    if args.action.lower() == "train":
+        logdir="classifier/logs/%d_%d_%.3f_%d" % (args.conv_feature, args.batch_size, args.learn_rate, args.epoch)
+        tbcnn_train.train_model(logdir, args.infile, args.embedfile, args.conv_feature, args.learn_rate, args.batch_size, args.epoch)
+    elif args.action.lower() == "test":
+        logdir = "classifier/logs/%d_%d_%.3f_%d" % (args.conv_feature, args.batch_size, args.learn_rate, args.epoch)
+        tbcnn_test.test_model(logdir, args.infile, args.embedfile, args.conv_feature)

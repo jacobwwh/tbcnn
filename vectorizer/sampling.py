@@ -1,6 +1,7 @@
 """Helper functions te facilitate sampling from an AST."""
 
-import ast
+from code2ast.data.java import ast
+
 
 def traverse_nodes(tree):
     """Return a generator that traverses all nodes of a tree."""

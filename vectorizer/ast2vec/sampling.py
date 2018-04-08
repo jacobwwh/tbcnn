@@ -1,7 +1,5 @@
 """Helper functions for sampling in ast2vec."""
 
-import ast
-
 from vectorizer.node_map import NODE_MAP
 
 def batch_samples(samples, batch_size):

@@ -1,15 +1,16 @@
 """Parse trees from a data source."""
-import ast
-import sys
 import pickle
 import random
+import sys
 from collections import defaultdict
+from code2ast.codesource.java_ast import JavaAST
 
 def parse(args):
     """Parse trees with the given arguments."""
     print ('Loading pickle file')
 
     sys.setrecursionlimit(1000000)
+    print args.infile
     with open(args.infile, 'rb') as file_handler:
         data_source = pickle.load(file_handler)
 
@@ -21,12 +22,15 @@ def parse(args):
     train_counts = defaultdict(int)
     test_counts = defaultdict(int)
 
+    # print data_source
     for item in data_source:
+        print item
         root = item['tree']
         label = item['metadata'][args.label_key]
         sample, size = _traverse_tree(root)
 
         if size > args.maxsize or size < args.minsize:
+            print 'continue', size, args.maxsize, args.minsize
             continue
 
         roll = random.randint(0, 100)
@@ -68,7 +72,6 @@ def _traverse_tree(root):
         # print (_name(current_node))
         current_node_json = queue_json.pop(0)
 
-
         children = list(child for _, child in current_node.children())
         # children = list(ast.iter_child_nodes(current_node))
         queue.extend(children)
@@ -84,4 +87,10 @@ def _traverse_tree(root):
     return root_json, num_nodes
 
 def _name(node):
-    return type(node).__name__
+    # if type(node).__name__=="FileAST":
+    #     return "root"
+    # return node.__class__.__name__
+    if isinstance(node, JavaAST):
+        return node.name
+    else:
+        return node.__class__.__name__

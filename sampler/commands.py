@@ -9,7 +9,7 @@ import sampler.nodes as nodes
 def main():
 
     parser = argparse.ArgumentParser(
-        description="Sample trees or nodes from a crawler file.",
+        description="Sample trees or nodes from a code2ast file.",
     )
     subparsers = parser.add_subparsers(help='sub-command help')
 
@@ -28,7 +28,7 @@ def main():
         help='Ignore trees with more than --maxsize nodes'
     )
     tree_parser.add_argument(
-        '--minsize', type=int, default=100,
+        '--minsize', type=int, default=1,
         help='Ignore trees with less than --minsize nodes'
     )
     tree_parser.set_defaults(func=trees.parse)
@@ -50,3 +50,7 @@ def main():
 
     args = parser.parse_args()
     args.func(args)
+
+
+if __name__ == '__main__':
+    main()
